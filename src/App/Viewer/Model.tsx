@@ -61,6 +61,10 @@ const useTransform = (
     )
   );
 
+  const transformStart = useStore((s) => s.transformStart);
+  const transformEnd = useStore((s) => s.transformEnd);
+  const transformChange = useStore((s) => s.transformChange);
+
   const {
     camera,
     scene,
@@ -76,9 +80,18 @@ const useTransform = (
 
     scene.add(control);
 
-    control.attach(ref.current!);
+    const object = ref.current!;
 
-    control.addEventListener("change", () => console.log("change"));
+    control.attach(object);
+
+    control.addEventListener("objectChange", () => {
+      switch (tool) {
+        case "translate":
+          return transformChange(index, { position: object.position });
+      }
+    });
+    control.addEventListener("mouseDown", transformStart);
+    control.addEventListener("mouseUp", transformEnd as any);
     control.setMode(tool);
 
     return () => {

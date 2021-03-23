@@ -46,10 +46,14 @@ export type Api = {
   addStageFromFile: (file: File) => void;
   addStageFromUrl: (url: string) => void;
   setCamera: () => void;
+  transformStart: () => void;
+  transformEnd: (i: number, t: Partial<Transform>) => void;
+  transformChange: (i: number, t: Partial<Transform>) => void;
 };
 export type State = {
   stages: Stage[];
 
+  cameraLocked: boolean;
   currentStageIndex: number;
   currentModelIndex: number | null;
   currentTool: "translate" | "scale" | "rotate" | null;
@@ -60,6 +64,25 @@ export const useStore = create<State & Api>((set) => ({
   currentStageIndex: 0,
   currentModelIndex: 0,
   currentTool: "translate",
+  cameraLocked: false,
+
+  transformStart: () => set({ cameraLocked: true }),
+  transformEnd: () => set({ cameraLocked: false }),
+  transformChange: (i, t) =>
+    set((s) => {
+      return {
+        stages: s.stages.map((stage, j) =>
+          j === s.currentStageIndex
+            ? {
+                ...stage,
+                models: stage.models.map((m, j) =>
+                  j === i ? { ...m, transform: { ...m.transform, ...t } } : m
+                ),
+              }
+            : stage
+        ),
+      };
+    }),
 
   selectModel: (currentModelIndex) => set({ currentModelIndex }),
 
