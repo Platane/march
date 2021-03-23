@@ -1,0 +1,6 @@
+node_modules
+web_modules
+build
+.env
+.linaria-cache
+src/assets/locations.csv
