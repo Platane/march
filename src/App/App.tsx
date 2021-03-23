@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { styled } from "@linaria/react";
 import { css } from "@linaria/core";
 import { Viewer } from "./Viewer/Viewer";
 import { DropZone } from "./DropZone";
 import { useStore } from "./store/store";
+import { Preview } from "./Preview/Preview";
 
 // @ts-ignore
 import modelUrl from "../assets/Durian.glb";
@@ -13,15 +13,6 @@ export const App = () => {
 
   const { addStageFromUrl, setCamera } = useStore();
   useEffect(() => addStageFromUrl(modelUrl), []);
-
-  useEffect(() => {
-    fetch(`/upload`, {
-      method: "post",
-      body: new Int8Array(Array.from({ length: 99999 }, () => 3)),
-    })
-      .then((res) => res.text())
-      .then((url) => console.log(url));
-  }, []);
 
   useEffect(() => {
     let cancel: number;
@@ -38,7 +29,12 @@ export const App = () => {
   return (
     <>
       {!ready && <DropZone />}
-      {ready && <Viewer />}
+      {ready && (
+        <>
+          <Viewer />
+          <Preview />
+        </>
+      )}
     </>
   );
 };

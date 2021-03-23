@@ -19,10 +19,10 @@ export const Camera = () => {
       const group = ref.current!;
 
       group.position.copy(camera.position as any);
-      v.copy(camera.target as any);
-      group.lookAt(v);
+      group.lookAt(camera.target.x, camera.target.y, camera.target.z);
 
       const [arrowHelper] = group.children as any;
+      v.copy(camera.target as any);
       arrowHelper.setLength(v.distanceTo(group.position));
     },
     (s: State) => s.stages[0]?.camera

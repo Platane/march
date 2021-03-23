@@ -26,19 +26,18 @@ export type ArCamera = {
 };
 
 export type DirectionalLight = {
-  position: Vec3;
   direction: Vec3;
   intensity: number;
-  color: number;
+  color: string | number;
 };
 
 export type Stage = {
   models: Model[];
   camera: Camera;
   arCamera: ArCamera;
-  light?: {
-    environnementMap: { url: string };
-    directionalLight: DirectionalLight;
+  light: {
+    environnementMap?: { url: string };
+    directionalLight?: DirectionalLight;
   };
 };
 
@@ -113,9 +112,17 @@ const createStage = (url: string) => {
     position: { x: 0, y: 0 },
     direction: { x: 0, y: 0 },
   };
+  const light = {
+    directionalLight: {
+      color: "#eee",
+      intensity: 1,
+      direction: { x: 0, y: 1, z: 0 },
+    },
+  };
 
   const stage = {
     models: [model],
+    light,
     camera,
     arCamera,
   };

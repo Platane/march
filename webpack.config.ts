@@ -105,6 +105,7 @@ const webpackDevServerConfiguration: WebpackDevServerConfiguration = {
   useLocalIp: true,
   stats: "minimal",
   open: true,
+  https: true,
   after: (app) => {
     const cache = new Map<string, Buffer>();
 
@@ -135,6 +136,7 @@ const webpackDevServerConfiguration: WebpackDevServerConfiguration = {
       } else {
         res.writeHead(200, {
           ["content-type"]: "application/octet-stream",
+          ["Access-Control-Allow-Origin"]: "*",
         });
         res.write(cache.get(key));
         res.end();
