@@ -11,9 +11,10 @@ import modelUrl from "../assets/Durian.glb";
 export const App = () => {
   const ready = useStore((s) => !!s.stages?.[0]?.models?.[0]);
 
-  const { addStageFromUrl, setCamera } = useStore();
+  const addStageFromUrl = useStore((s) => s.addStageFromUrl);
   useEffect(() => addStageFromUrl(modelUrl), []);
 
+  const setCamera = useStore((s) => s.setCamera);
   useEffect(() => {
     let cancel: number;
     const loop = () => {

@@ -3,6 +3,8 @@ import { useGLTF } from "drei";
 import * as THREE from "three";
 import { Transform, useStore } from "../store/store";
 import { useSubscribe } from "../store/useSubscribe";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import { useThree } from "react-three-fiber";
 
 export const Model = ({ index }: { index: number }) => {
   useSubscribe(
@@ -37,9 +39,51 @@ export const Model = ({ index }: { index: number }) => {
     };
   }, [gltf]);
 
+  useTransform(index, ref);
+
+  const selectModel = useStore((s) => s.selectModel);
+
   return (
-    <group ref={ref}>
+    <group ref={ref} onClick={() => selectModel(index)} userData={{ index }}>
       <group />
     </group>
   );
+};
+
+const useTransform = (
+  index: number,
+  ref: React.MutableRefObject<THREE.Group | undefined>
+) => {
+  const tool = useStore(
+    useCallback(
+      (s) => (s.currentModelIndex === index && s.currentTool) ?? null,
+      [index]
+    )
+  );
+
+  const {
+    camera,
+    scene,
+    gl: { domElement },
+  } = useThree();
+
+  useEffect(() => {
+    if (!tool) return;
+
+    const control = new TransformControls(camera, domElement);
+
+    // control.traverse((o) => o.layers.set(1));
+
+    scene.add(control);
+
+    control.attach(ref.current!);
+
+    control.addEventListener("change", () => console.log("change"));
+    control.setMode(tool);
+
+    return () => {
+      scene.remove(control);
+      control.dispose();
+    };
+  }, [tool]);
 };

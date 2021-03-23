@@ -1,9 +1,10 @@
 import { RoundedBox } from "drei";
 import React, { useEffect, useRef, useState } from "react";
-import { render, useFrame } from "react-three-fiber";
+import { useFrame } from "react-three-fiber";
 import * as THREE from "three";
 import { State, Camera as CameraType, useStore } from "../store/store";
 import { useSubscribe } from "../store/useSubscribe";
+import { InlinePreview } from "./InlinePreview";
 
 const v = new THREE.Vector3();
 
@@ -52,6 +53,8 @@ export const Camera = () => {
         <planeBufferGeometry args={[0.064, 0.124, 1, 1]} />
         <meshBasicMaterial map={texture} />
       </mesh>
+
+      {!false && <InlinePreview canvas={texture.image} />}
     </group>
   );
 };
@@ -62,17 +65,11 @@ const createRenderer = () => {
   camera.layers.enable(0);
 
   const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(128, 256);
+  renderer.setSize(255, 256);
   renderer.setClearColor("#fff");
   renderer.outputEncoding = THREE.sRGBEncoding;
 
   const texture = new THREE.Texture(renderer.domElement);
-
-  // renderer.domElement.style.position = "fixed";
-  // renderer.domElement.style.zIndex = "2";
-  // renderer.domElement.style.top = "10px";
-  // renderer.domElement.style.left = "10px";
-  // document.body.appendChild(renderer.domElement);
 
   const update = (scene: THREE.Scene, c: CameraType) => {
     camera.position.copy(c.position as any);

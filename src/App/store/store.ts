@@ -42,16 +42,26 @@ export type Stage = {
 };
 
 export type Api = {
+  selectModel: (index: number | null) => void;
   addStageFromFile: (file: File) => void;
   addStageFromUrl: (url: string) => void;
   setCamera: () => void;
 };
 export type State = {
   stages: Stage[];
+
+  currentStageIndex: number;
+  currentModelIndex: number | null;
+  currentTool: "translate" | "scale" | "rotate" | null;
 };
 
 export const useStore = create<State & Api>((set) => ({
   stages: [],
+  currentStageIndex: 0,
+  currentModelIndex: 0,
+  currentTool: "translate",
+
+  selectModel: (currentModelIndex) => set({ currentModelIndex }),
 
   addStageFromFile: async (file) => {
     const fr = new FileReader();
@@ -62,11 +72,10 @@ export const useStore = create<State & Api>((set) => ({
 
     await promise;
 
-    set((s) => ({ ...s, stages: [createStage(fr.result as string)] }));
+    set({ stages: [createStage(fr.result as string)] });
   },
 
-  addStageFromUrl: async (url) =>
-    set((s) => ({ ...s, stages: [createStage(url)] })),
+  addStageFromUrl: async (url) => set({ stages: [createStage(url)] }),
 
   setCamera: () =>
     set((s) => {

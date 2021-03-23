@@ -41,7 +41,12 @@ export const Preview = () => {
         {stage && !glb && <div>generating ...</div>}
 
         {objectUrl && (
-          <A target="_blank" rel="noopener noreferrer" href={objectUrl}>
+          <A
+            target="_blank"
+            rel="noopener noreferrer"
+            href={objectUrl}
+            download={objectUrl.slice(objectUrl.lastIndexOf("/") + 1) + ".glb"}
+          >
             gltf
           </A>
         )}
