@@ -9,7 +9,10 @@ export const useUpload = (body: ArrayBuffer | null) => {
     if (!body) return;
 
     fetch(`/upload`, { method: "post", body })
-      .then((res) => res.text())
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status.toString());
+        return res.text();
+      })
       .then((url) => setResult({ url, body }));
   }, [body]);
 
