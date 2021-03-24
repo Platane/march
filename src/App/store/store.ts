@@ -41,7 +41,10 @@ export type Stage = {
   };
 };
 
+type Tool = "translate" | "scale" | "rotate" | null;
+
 export type Api = {
+  selectTool: (tool: Tool) => void;
   selectModel: (index: number | null) => void;
   addStageFromFile: (file: File) => void;
   addStageFromUrl: (url: string) => void;
@@ -56,14 +59,14 @@ export type State = {
   cameraLocked: boolean;
   currentStageIndex: number;
   currentModelIndex: number | null;
-  currentTool: "translate" | "scale" | "rotate" | null;
+  currentTool: Tool;
 };
 
 export const useStore = create<State & Api>((set) => ({
   stages: [],
   currentStageIndex: 0,
   currentModelIndex: 0,
-  currentTool: "translate",
+  currentTool: null,
   cameraLocked: false,
 
   transformStart: () => set({ cameraLocked: true }),
@@ -85,6 +88,8 @@ export const useStore = create<State & Api>((set) => ({
     }),
 
   selectModel: (currentModelIndex) => set({ currentModelIndex }),
+
+  selectTool: (currentTool) => set({ currentTool }),
 
   addStageFromFile: async (file) => {
     const fr = new FileReader();

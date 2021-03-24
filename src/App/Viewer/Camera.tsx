@@ -13,8 +13,6 @@ export const Camera = () => {
 
   const ref = useRef<THREE.Group>();
 
-  useEffect(() => ref.current!.traverse((o) => o.layers.set(1)), []);
-
   useSubscribe(
     (camera) => {
       const group = ref.current!;
@@ -54,15 +52,18 @@ export const Camera = () => {
         <meshBasicMaterial map={texture} />
       </mesh>
 
-      {!false && <InlinePreview canvas={texture.image} />}
+      {!false && (
+        <group position={[0, 0, -0.2]}>
+          <InlinePreview canvas={texture.image} />
+        </group>
+      )}
     </group>
   );
 };
 
 const createRenderer = () => {
   const camera = new THREE.PerspectiveCamera();
-  camera.layers.disableAll();
-  camera.layers.enable(0);
+  camera.layers.set(1);
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(255, 256);

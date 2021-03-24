@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
-import { useEffect, useMemo, useState } from "react";
-import { generateGltf } from "../../generate/generate";
+import { useState } from "react";
 import { Stage, useStore } from "../store/store";
+import { useGlb, useObjectUrl, useUpload } from "./utils";
 
 export const Preview = () => {
   const [stage, setStage] = useState<Stage>();
@@ -10,13 +10,7 @@ export const Preview = () => {
 
   const glb = useGlb(stage ?? null);
   const remoteUrl = useUpload(glb);
-
-  const objectUrl = useMemo(() => {
-    if (!glb) return;
-    const blob = new Blob([glb], { type: "model/gltf-binary" });
-    return URL.createObjectURL(blob);
-  }, [glb]);
-
+  const objectUrl = useObjectUrl(glb, "model/gltf-binary");
   const viewerUrl =
     remoteUrl && `https://gltf-viewer.donmccurdy.com/#model=${remoteUrl}`;
 
@@ -79,29 +73,3 @@ const Container = styled.div`
 const Button = styled.button`
   padding: 4px;
 `;
-
-export const useUpload = (body: ArrayBuffer | null) => {
-  const [result, setResult] = useState<{ body: ArrayBuffer; url: string }>();
-
-  useEffect(() => {
-    if (!body) return;
-
-    fetch(`/upload`, { method: "post", body })
-      .then((res) => res.text())
-      .then((url) => setResult({ url, body }));
-  }, [body]);
-
-  return body === result?.body && result ? result.url : null;
-};
-
-export const useGlb = (stage: Stage | null) => {
-  const [result, setResult] = useState<{ stage: Stage; glb: ArrayBuffer }>();
-
-  useEffect(() => {
-    if (!stage) return;
-
-    generateGltf(stage).then((glb) => setResult({ glb, stage }));
-  }, [stage]);
-
-  return stage === result?.stage && result ? result.glb : null;
-};

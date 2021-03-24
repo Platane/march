@@ -1,31 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { css } from "@linaria/core";
 import { Viewer } from "./Viewer/Viewer";
+import { ViewerUi } from "./ViewerUi/ViewerUi";
 import { DropZone } from "./DropZone";
 import { useStore } from "./store/store";
 import { Preview } from "./Preview/Preview";
 
-// @ts-ignore
-import modelUrl from "../assets/Durian.glb";
-
 export const App = () => {
   const ready = useStore((s) => !!s.stages?.[0]?.models?.[0]);
-
-  const addStageFromUrl = useStore((s) => s.addStageFromUrl);
-  useEffect(() => addStageFromUrl(modelUrl), []);
-
-  const setCamera = useStore((s) => s.setCamera);
-  useEffect(() => {
-    let cancel: number;
-    const loop = () => {
-      setCamera();
-      cancel = requestAnimationFrame(loop);
-    };
-    loop();
-    return () => {
-      cancelAnimationFrame(cancel);
-    };
-  }, []);
 
   return (
     <>
@@ -33,6 +15,7 @@ export const App = () => {
       {ready && (
         <>
           <Viewer />
+          <ViewerUi />
           <Preview />
         </>
       )}

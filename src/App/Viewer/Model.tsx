@@ -33,6 +33,7 @@ export const Model = ({ index }: { index: number }) => {
     if (!container) return;
 
     container.add(gltf.scene);
+    gltf.scene.traverse((o) => o.layers.set(1));
 
     return () => {
       container.remove(gltf.scene);
@@ -76,8 +77,6 @@ const useTransform = (
 
     const control = new TransformControls(camera, domElement);
 
-    // control.traverse((o) => o.layers.set(1));
-
     scene.add(control);
 
     const object = ref.current!;
@@ -88,14 +87,40 @@ const useTransform = (
       switch (tool) {
         case "translate":
           return transformChange(index, { position: object.position });
+        case "rotate":
+          return transformChange(index, {
+            rotation: {
+              x: object.quaternion.x,
+              y: object.quaternion.y,
+              z: object.quaternion.z,
+              w: object.quaternion.w,
+            },
+          });
+        case "scale":
+          return transformChange(index, { scale: object.scale.y });
       }
     });
     control.addEventListener("mouseDown", transformStart);
     control.addEventListener("mouseUp", transformEnd as any);
     control.setMode(tool);
 
+    switch (tool) {
+      case "translate":
+      case "rotate":
+        control.setSpace("world");
+        break;
+
+      case "scale":
+        control.setSpace("local");
+        control.showX = false;
+        control.showZ = false;
+        break;
+    }
+
     return () => {
       scene.remove(control);
+      control.detach();
+      control.clear();
       control.dispose();
     };
   }, [tool]);

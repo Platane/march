@@ -1,10 +1,10 @@
 import React from "react";
-import * as THREE from "three";
 import { styled } from "@linaria/react";
 import { Canvas } from "react-three-fiber";
 import { OrbitControls } from "drei";
-import { Stage } from "./Stage";
 import { useStore } from "../store/store";
+import { Stage } from "./Stage";
+import { Light } from "./Light";
 
 export const Viewer = () => (
   <Container>
@@ -15,9 +15,9 @@ export const Viewer = () => (
         enabled={useStore((s) => !s.cameraLocked)}
       />
 
-      <ambientLight intensity={1} />
+      <Light />
 
-      <axesHelper args={[1]} layers={1 as any} />
+      <axesHelper args={[1]} />
 
       <Stage />
     </Canvas>
