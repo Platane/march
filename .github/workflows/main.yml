@@ -16,7 +16,7 @@ jobs:
 
       - run: yarn type
       - run: yarn lint
-      - run: yarn test
+      # - run: yarn test
       - run: yarn build
       - run: yarn surge ./build march-platane.surge.sh
         env:

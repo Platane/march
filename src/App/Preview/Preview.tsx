@@ -80,8 +80,8 @@ const Button = styled.button`
   padding: 4px;
 `;
 
-export const useUpload = (body: Buffer | null) => {
-  const [result, setResult] = useState<{ body: Buffer; url: string }>();
+export const useUpload = (body: ArrayBuffer | null) => {
+  const [result, setResult] = useState<{ body: ArrayBuffer; url: string }>();
 
   useEffect(() => {
     if (!body) return;
@@ -95,7 +95,7 @@ export const useUpload = (body: Buffer | null) => {
 };
 
 export const useGlb = (stage: Stage | null) => {
-  const [result, setResult] = useState<{ stage: Stage; glb: Buffer }>();
+  const [result, setResult] = useState<{ stage: Stage; glb: ArrayBuffer }>();
 
   useEffect(() => {
     if (!stage) return;
