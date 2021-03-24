@@ -1,7 +1,8 @@
 {
-  "name": "",
+  "name": "march",
   "version": "0.0.1",
   "private": true,
+  "repository": "github:Platane/march",
   "dependencies": {
     "base-64": "1.0.0",
     "deep-equal": "2.0.5",
