@@ -8,7 +8,7 @@ import { Light } from "./Light";
 
 export const Viewer = () => (
   <Container>
-    <Canvas camera={{ near: 0.1, far: 20 }} pixelRatio={[1, 4]}>
+    <Canvas camera={{ near: 0.1, far: 20 }} dpr={[1, 4]}>
       <OrbitControls
         minDistance={1}
         maxDistance={10}

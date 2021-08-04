@@ -18,7 +18,7 @@ export const useUpload = (body: ArrayBuffer | null) =>
 
 export const useGlb = (stage: Stage | null) =>
   useAsyncMemo(async () => {
-    if (!stage) return;
+    if (!stage) return null;
 
     const glb = await generateGltf(stage);
 
