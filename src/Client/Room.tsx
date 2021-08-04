@@ -1,4 +1,4 @@
-export const World = () => (
+export const Room = () => (
   <>
     <Ground />
 
@@ -10,6 +10,11 @@ export const World = () => (
     <mesh position={[-1, 0.45, -2]} castShadow receiveShadow>
       <boxBufferGeometry args={[2, 0.9, 1.2]} />
       <meshStandardMaterial color="limegreen" />
+    </mesh>
+
+    <mesh position={[2, 1.75, -5]} castShadow receiveShadow>
+      <boxBufferGeometry args={[8, 2.5, 0.1]} />
+      <meshStandardMaterial color="#bbb" />
     </mesh>
   </>
 );

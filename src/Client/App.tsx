@@ -5,10 +5,11 @@ import {
   Environment,
   OrbitControls,
   PointerLockControls,
+  Sky,
   Stage,
 } from "@react-three/drei";
 import * as THREE from "three";
-import { World } from "./World";
+import { Room } from "./Room";
 import { Device } from "./Device";
 
 export const App = () => (
@@ -21,8 +22,16 @@ export const App = () => (
         <Stage />
       </Suspense>
 
-      <World />
+      <Room />
       <Device />
+      <Sky
+        turbidity={8}
+        rayleigh={6}
+        mieCoefficient={0.005}
+        mieDirectionalG={0.8}
+        inclination={0.55}
+        azimuth={0.45}
+      />
 
       <axesHelper args={[1]} layers={1} />
     </Canvas>
