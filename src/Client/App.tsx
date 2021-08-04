@@ -11,6 +11,7 @@ import {
 import * as THREE from "three";
 import { Room } from "./Room";
 import { Device } from "./Device";
+import { Model } from "./Model";
 
 export const App = () => (
   <Container>
@@ -24,6 +25,11 @@ export const App = () => (
 
       <Room />
       <Device />
+
+      <Suspense fallback={null}>
+        <Model />
+      </Suspense>
+
       <Sky
         turbidity={8}
         rayleigh={6}

@@ -1,5 +1,5 @@
 export const Room = () => (
-  <>
+  <group name="room">
     <Ground />
 
     <mesh position={[-1, 0.4, 0]} castShadow receiveShadow>
@@ -16,7 +16,7 @@ export const Room = () => (
       <boxBufferGeometry args={[8, 2.5, 0.1]} />
       <meshStandardMaterial color="#bbb" />
     </mesh>
-  </>
+  </group>
 );
 
 const Ground = () => (

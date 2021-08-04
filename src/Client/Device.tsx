@@ -17,17 +17,18 @@ export const Device = () => {
   const deviceSpring = useRef({ x: 0, v: 0 });
 
   const target = useFBO(256, 512);
-  const [deviceCamera] = useState(() => new THREE.PerspectiveCamera(60, 1));
+  const [deviceCamera] = useState(() => new THREE.PerspectiveCamera(60, 0.5));
 
   const container = useRef<THREE.Group>();
 
-  useFrame(({ camera, scene, gl }) => {
+  useFrame(({ camera, scene, gl }, dt) => {
     if (!container.current) return;
 
     stepSpring(
       deviceSpring.current,
       { tension: 120, friction: 16 },
-      useStore.getState().deviceUp ? 1 : 0
+      useStore.getState().deviceUp ? 1 : 0,
+      dt
     );
 
     container.current.setRotationFromAxisAngle(
@@ -47,14 +48,21 @@ export const Device = () => {
     deviceCamera.position.copy(container.current.position);
     deviceCamera.updateMatrix();
 
+    camera.userData.deviceCamera = deviceCamera;
+
+    const originalSize = gl.getSize(new THREE.Vector2());
     gl.clear();
+    gl.setSize(target.width, target.height);
     gl.setRenderTarget(target);
+
     gl.render(scene, deviceCamera);
+
+    gl.setSize(originalSize.x, originalSize.y);
     gl.setRenderTarget(null);
   });
 
   return (
-    <group ref={container}>
+    <group ref={container} name="device">
       <RoundedBox
         args={[0.08, 0.14, 0.008]}
         position={[0, -0.05, 0]}
@@ -70,33 +78,6 @@ export const Device = () => {
       </mesh>
     </group>
   );
-};
-
-const createRenderer = () => {
-  const camera = new THREE.PerspectiveCamera();
-  camera.layers.set(1);
-
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(255, 256);
-  renderer.setClearColor("#fff");
-  renderer.outputEncoding = THREE.sRGBEncoding;
-
-  const texture = new THREE.Texture(renderer.domElement);
-
-  const update = (scene: THREE.Scene) => {
-    camera.position.copy(c.position as any);
-    camera.lookAt(v.copy(c.target as any));
-    camera.fov = c.fov;
-    camera.updateProjectionMatrix();
-    camera.updateMatrix();
-
-    renderer.clear();
-    renderer.render(scene, camera);
-
-    texture.needsUpdate = true;
-  };
-
-  return { texture, update };
 };
 
 const color = new THREE.Color("#333");
