@@ -21,7 +21,7 @@ export const initServerStore = (
   app.post("/upload", async (req, res) => {
     const buffer = await readBody(req);
 
-    const key = getHash(buffer);
+    const key = await getHash(buffer);
 
     const u = new URL(`/get/${key}`, req.headers.origin || req.headers.referer);
 
