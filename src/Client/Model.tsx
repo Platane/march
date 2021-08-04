@@ -1,10 +1,7 @@
-import React, { Suspense, useEffect, useRef } from "react";
-import { styled } from "@linaria/react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { PointerLockControls, Stage, useGLTF } from "@react-three/drei";
+import React, { useEffect, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { Room } from "./Room";
-import { Device } from "./Device";
 import { useStore } from "./store/store";
 
 export const Model = () => {
@@ -46,9 +43,8 @@ export const Model = () => {
           new THREE.Matrix3().setFromMatrix4(hit.object.matrixWorld)
         );
 
-      container.current.children[1].visible = container.current.children[0].visible = !!(
-        n && n.dot(up) > 0.5
-      );
+      container.current.children[1].visible =
+        container.current.children[0].visible = !!(n && n.dot(up) > 0.5);
     } else {
       container.current.visible = false;
     }
