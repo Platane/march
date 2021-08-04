@@ -9,7 +9,8 @@ import {
 import type { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import TerserPlugin from "terser-webpack-plugin";
-import { GenerateSW } from "workbox-webpack-plugin";
+import { InjectManifest } from "workbox-webpack-plugin";
+import { initServerStore } from "./server";
 
 const mode =
   process.env.NODE_ENV === "production" ? "production" : "development";
@@ -81,14 +82,14 @@ const webpackConfiguration: WebpackConfiguration = {
           filter: (f: string) => [".js", ".wasm"].includes(path.extname(f)),
         },
       ],
-    }),
+    }) as any,
 
     new HtmlPlugin({
       title: "🧺",
     }),
 
-    new GenerateSW({
-      swDest: "service-worker.js",
+    new InjectManifest({
+      swSrc: path.join(__dirname, "src/service-worker.ts"),
       exclude: [/\.LICENSE\.txt/],
     }),
 
@@ -107,41 +108,7 @@ const webpackDevServerConfiguration: WebpackDevServerConfiguration = {
   open: true,
   https: true,
   after: (app) => {
-    const cache = new Map<string, Buffer>();
-
-    app.post("/upload", (req, res) => {
-      const key = Math.random().toString(36).slice(2, 8);
-
-      const url = new URL(
-        `/get/${key}`,
-        req.headers.origin || req.headers.referer
-      ).toString();
-
-      const chunks: Buffer[] = [];
-      req.on("data", (c) => chunks.push(c));
-      req.on("end", () => {
-        cache.set(key, Buffer.concat(chunks));
-
-        res.write(url);
-        res.end();
-      });
-    });
-
-    app.get("/get/:key", (req, res) => {
-      const key = req.params.key as string;
-
-      if (!cache.has(key)) {
-        res.writeHead(404);
-        res.end();
-      } else {
-        res.writeHead(200, {
-          ["content-type"]: "application/octet-stream",
-          ["Access-Control-Allow-Origin"]: "*",
-        });
-        res.write(cache.get(key));
-        res.end();
-      }
-    });
+    initServerStore(app);
   },
 };
 

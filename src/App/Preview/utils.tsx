@@ -11,9 +11,9 @@ export const useUpload = (body: ArrayBuffer | null) => {
     fetch(`/upload`, { method: "post", body })
       .then((res) => {
         if (!res.ok) throw new Error(res.status.toString());
-        return res.text();
+        return res.json();
       })
-      .then((url) => setResult({ url, body }));
+      .then(({ url }) => setResult({ url, body }));
   }, [body]);
 
   return body === result?.body && result ? result.url : null;
