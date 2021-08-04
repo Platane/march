@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { useGLTF } from "drei";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { Transform, useStore } from "../store/store";
 import { useSubscribe } from "../store/useSubscribe";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { useThree } from "react-three-fiber";
+import { useThree } from "@react-three/fiber";
 
 export const Model = ({ index }: { index: number }) => {
   useSubscribe(

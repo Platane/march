@@ -1,7 +1,8 @@
 import { styled } from "@linaria/react";
 import { useState } from "react";
+import { useObjectUrl } from "../../hooks/useObjectUrl";
 import { Stage, useStore } from "../store/store";
-import { useGlb, useObjectUrl, useUpload } from "./utils";
+import { useGlb, useUpload } from "./utils";
 
 export const Preview = () => {
   const [stage, setStage] = useState<Stage>();
@@ -42,6 +43,12 @@ export const Preview = () => {
             download={objectUrl.slice(objectUrl.lastIndexOf("/") + 1) + ".glb"}
           >
             gltf
+          </A>
+        )}
+
+        {remoteUrl && (
+          <A target="_blank" rel="noopener noreferrer" href={remoteUrl}>
+            gltf remote
           </A>
         )}
 

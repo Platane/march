@@ -1,6 +1,6 @@
-import { RoundedBox } from "drei";
+import { RoundedBox } from "@react-three/drei";
 import React, { useEffect, useRef, useState } from "react";
-import { useFrame } from "react-three-fiber";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { State, Camera as CameraType, useStore } from "../store/store";
 import { useSubscribe } from "../store/useSubscribe";

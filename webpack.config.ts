@@ -18,7 +18,10 @@ const mode =
 const webpackConfiguration: WebpackConfiguration = {
   mode,
   devtool: false,
-  entry: path.join(__dirname, "src/index"),
+  entry: {
+    editor: path.join(__dirname, "src/Editor/index"),
+    client: path.join(__dirname, "src/Client/index"),
+  },
   output: {
     path: path.join(__dirname, "build"),
     filename: "[contenthash].js",
@@ -86,6 +89,13 @@ const webpackConfiguration: WebpackConfiguration = {
 
     new HtmlPlugin({
       title: "🧺",
+      chunks: ["editor"],
+    }),
+
+    new HtmlPlugin({
+      title: "🎯",
+      chunks: ["client"],
+      filename: "client.html",
     }),
 
     new InjectManifest({

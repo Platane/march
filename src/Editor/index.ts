@@ -1,10 +1,10 @@
 import { createElement } from "react";
 import { render } from "react-dom";
-import { App } from "./App/App";
-import { useStore } from "./App/store/store";
+import { App } from "./App";
+import { useStore } from "./store/store";
 
 // @ts-ignore
-import modelUrl from "./assets/Durian.glb";
+import modelUrl from "../assets/Durian.glb";
 
 const root = document.createElement("div");
 root.id = "root";

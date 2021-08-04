@@ -1,8 +1,6 @@
 import create from "zustand";
+import { Quat, Vec2, Vec3 } from "./types";
 
-export type Vec2 = { x: number; y: number };
-export type Vec3 = { x: number; y: number; z: number };
-export type Quat = { x: number; y: number; z: number; w: number };
 export type Transform = {
   origin: Vec3;
   position: Vec3;

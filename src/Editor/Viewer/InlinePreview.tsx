@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import { Html } from "drei";
+import { Html } from "@react-three/drei";
 import React from "react";
 
 export const InlinePreview = ({ canvas }: { canvas: HTMLElement }) => {

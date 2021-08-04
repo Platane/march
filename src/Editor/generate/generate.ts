@@ -1,7 +1,7 @@
+import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
-import * as THREE from "three";
-import type { Stage } from "../App/store/store";
+import type { Stage } from "../store/store";
 
 const loader = new GLTFLoader();
 const exporter = new GLTFExporter();
