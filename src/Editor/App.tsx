@@ -23,7 +23,7 @@ export const App = () => {
   );
 };
 
-export const globals = css`
+const globals = css`
   :global() {
     html {
       box-sizing: border-box;
